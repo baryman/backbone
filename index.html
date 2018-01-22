@@ -4,18 +4,54 @@
 	<meta charset="UTF-8">
 	<title>Backbone</title>
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/sumoselect.css">
+
 </head>
 <body>
-	<p>Привет, мир!</p>
 
-	<script type="text/template" id="person-id">
-		<strong><%= name %></strong> ( <%= age %> ) - <%= job %>
+<span class="car-block"></span>
+<span class="model-block"></span>
+
+	<script type="text/template" id="cars-select">
+		<select id="cars-select_brand">
+
+			<option selected disabled>Выберите марку авто</option>
+
+			<% _.forEach(cars, function(car){%>
+				<option data-car_brand="<%=car.brand %>" value="<%=car.brand %>"><%=car.brand %></option>
+			<%})%>
+
+		</select>
 	</script>
 
+	<script type="text/template" id="model-select">
+		<select id="cars-select_model">
+
+			<option selected disabled>Выберите модель</option>
+
+			<% _.forEach(models, function(model){%>
+				<% if (!_.isEmpty(model.body)){%>
+					<optgroup label="<%=model.title %>">
+						<% _.forEach(model.body, function(body){%>
+							<option data-car_model="<%=body.code %>" value="<%=body.title %>">Модель - <%=body.title %></option>
+						<%})%>
+					</optgroup>
+				<%}else{%>
+					<option data-car_model="<%=model.code %>" value="<%=model.title %>"><%=model.title %></option>
+				<%}%>
+			<%})%>
+		</select>
+	</script>
+
+
+
+	
 	<script src="js/jquery.js"></script>
+	<script src="js/jquery.sumoselect.js"></script>
 	<script src="js/underscore.js"></script>
 	<script src="js/backbone.js"></script>
+	<script src="js/machine.js"></script>
 	<script src="js/main.js"></script>
-	<script src="js/main.js"></script>dg
+
 </body>
 </html>
