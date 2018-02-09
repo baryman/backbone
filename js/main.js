@@ -1,12 +1,20 @@
 var ALL_CARS = Cars,
+    COLLECTIONS_CARS = Collection_cars,
     SelectCarsView,
+    ListOfCars,
+    CarsCollection = Backbone.Collection.extend({});
     TestBackbone = Backbone.View.extend({
         el: $('.car-block'),
 
+        cars_collection: {},
+        brand_of_car: {},
+        model_of_car: {},
         selectCarsView: {},
         selectModelView: {},
 
         initialize: function () {
+            this.cars_collection = new CarsCollection;
+            window.cars_collection - this.cars_collection;
             this.startSelect();
         },
 
@@ -17,22 +25,66 @@ var ALL_CARS = Cars,
         },
 
         brandSelected: function(brand){
+            this.brand_of_car = brand;
             this.selectModelView = new SelectModelView();
             this.listenTo(this.selectModelView, 'modelSelected', this.modelSelected);
             this.selectModelView.render(ALL_CARS[brand]);
         },
 
-        // modelSelected: function(model){
-        //     this.selectBodyView = new SelectBodyView;
-        //     this.selectBodyView.render(ALL_CARS[])
-        // }
+        modelSelected: function(model){
+            this.model_of_car = model;
+
+            // Предварительно чистим нашу коллекцию от предыдущих моделей
+            this.removeCollection(this.cars_collection.models);
+            
+            this.startViewCollectionCars(this.brand_of_car, this.model_of_car);
+
+        },
+
+        removeCollection: function (models) {
+            this.cars_collection.remove(models);       
+        },
+
+        startViewCollectionCars: function (brand_of_car, model_of_car) {
+            var selected_car = COLLECTIONS_CARS[brand_of_car],
+                selected_model = selected_car[model_of_car],
+                self = this,
+                id = 1;
+            
+            List_of_cars = new ListOfCars({
+                model: this.cars_collection
+            });
+                
+            // Загружаем новые данные в коллецию
+            _.each(selected_model, function (car) {
+                
+              self.cars_collection.add(new CarModel({
+                    id: id,
+                    title: car.title,
+                    description: car.description,
+                    mileage: car.mileage
+               }));
+
+               id++;
+            });
+
+            
+            
+        }
 
     });
     
     
     
 
-//Модель человека
+CarModel = Backbone.Model.extend({
+    defaults:{
+        id: '',
+        title: '',
+        description: '',
+        mileage: ''
+    }
+});
 
 SelectBrandView = Backbone.View.extend({
     
@@ -81,6 +133,15 @@ SelectModelView = Backbone.View.extend({
         this.setElement('#cars-select_model');
         this.$el.SumoSelect();
 
+    }
+});
+
+ListOfCars = Backbone.View.extend({
+    initialize: function(){
+        this.model.off();
+        this.listenTo(this.model, 'add', function(e){
+            console.log(e);
+        });
     }
 });
 
