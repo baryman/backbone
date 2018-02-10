@@ -146,7 +146,7 @@ ViewOfCar = Backbone.View.extend({
     tagName: 'li',
     render: function () {
         this.$el.html(this.model.get('title') + '('+ this.model.get('mileage') + ') - ' + this.model.get('description'));
-        // console.log(this.el)
+
         return this;
     }
 })
@@ -161,15 +161,13 @@ ListOfCars = Backbone.View.extend({
     },
 
     render: function (element) {
-       var fields = (new ViewOfCar({
-           model: element
-       })).render().$el;
+        var fields = (new ViewOfCar({
+            model: element
+        })).render().$el;
 
-    this.$('.list').append(fields);
+        this.$('.list').append(fields);
 
-    //    this.$el.append(fields);
-        
-    //    return this;
+        return this;
         
     }
 });
