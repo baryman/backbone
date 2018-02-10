@@ -2,9 +2,10 @@ var ALL_CARS = Cars,
     COLLECTIONS_CARS = Collection_cars,
     SelectCarsView,
     ListOfCars,
-    CarsCollection = Backbone.Collection.extend({});
+    ViewOfCar,
+    CarsCollection = Backbone.Collection.extend({}),
     TestBackbone = Backbone.View.extend({
-        el: $('.car-block'),
+        el: $('#dependent_lists'),
 
         cars_collection: {},
         brand_of_car: {},
@@ -26,6 +27,7 @@ var ALL_CARS = Cars,
 
         brandSelected: function(brand){
             this.brand_of_car = brand;
+            this.removeCollection(this.cars_collection.models);
             this.selectModelView = new SelectModelView();
             this.listenTo(this.selectModelView, 'modelSelected', this.modelSelected);
             this.selectModelView.render(ALL_CARS[brand]);
@@ -42,7 +44,10 @@ var ALL_CARS = Cars,
         },
 
         removeCollection: function (models) {
-            this.cars_collection.remove(models);       
+            
+            
+            this.cars_collection.remove(models);
+            this.$('.list').html('');       
         },
 
         startViewCollectionCars: function (brand_of_car, model_of_car) {
@@ -136,12 +141,36 @@ SelectModelView = Backbone.View.extend({
     }
 });
 
+ViewOfCar = Backbone.View.extend({
+    model: new CarModel(),
+    tagName: 'li',
+    render: function () {
+        this.$el.html(this.model.get('title') + '('+ this.model.get('mileage') + ') - ' + this.model.get('description'));
+        // console.log(this.el)
+        return this;
+    }
+})
+
 ListOfCars = Backbone.View.extend({
+    el: $('.catalogs'),
     initialize: function(){
         this.model.off();
-        this.listenTo(this.model, 'add', function(e){
-            console.log(e);
+        this.listenTo(this.model, 'add', function(element){
+            this.render(element);
         });
+    },
+
+    render: function (element) {
+       var fields = (new ViewOfCar({
+           model: element
+       })).render().$el;
+
+    this.$('.list').append(fields);
+
+    //    this.$el.append(fields);
+        
+    //    return this;
+        
     }
 });
 
