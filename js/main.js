@@ -47,19 +47,31 @@ var ALL_CARS = Cars,
             
             
             this.cars_collection.remove(models);
-            this.$('.list').html('');       
+            this.$('.catalogs').html('');
+            this.$('.tt').remove();
+            this.$('.description').show();  
         },
 
         startViewCollectionCars: function (brand_of_car, model_of_car) {
             var selected_car = COLLECTIONS_CARS[brand_of_car],
                 selected_model = selected_car[model_of_car],
                 self = this,
-                id = 1;
+                id = 1,
+                template_of_title = _.template($("#template_title").html());
+
+            this.$('.description').hide();
+            this.$('.catalogs').before(template_of_title({
+                brand : brand_of_car,
+                model: model_of_car
+            }));    
             
             List_of_cars = new ListOfCars({
-                model: this.cars_collection
+                el: this.$el,
+                model: this.cars_collection,
+                brand_of_car: this.brand_of_car,
+                model_of_car: this.model_of_car
             });
-                
+                     
             // Загружаем новые данные в коллецию
             _.each(selected_model, function (car) {
                 
@@ -72,11 +84,7 @@ var ALL_CARS = Cars,
 
                id++;
             });
-
-            
-            
         }
-
     });
     
     
@@ -143,17 +151,24 @@ SelectModelView = Backbone.View.extend({
 
 ViewOfCar = Backbone.View.extend({
     model: new CarModel(),
-    tagName: 'li',
+    tagName: 'div',
+    className: 'lot',
+    template: _.template($('#cars-list').html()),
     render: function () {
-        this.$el.html(this.model.get('title') + '('+ this.model.get('mileage') + ') - ' + this.model.get('description'));
+        this.$el.html(this.template({
+            id: this.model.get('id'),
+            title: this.model.get('title'),
+            description: this.model.get('description'),
+            mileage: this.model.get('mileage')
+        }));
 
         return this;
     }
 })
 
 ListOfCars = Backbone.View.extend({
-    el: $('.catalogs'),
-    initialize: function(){
+    initialize: function(params){
+        this.params = params || {};
         this.model.off();
         this.listenTo(this.model, 'add', function(element){
             this.render(element);
@@ -165,8 +180,8 @@ ListOfCars = Backbone.View.extend({
             model: element
         })).render().$el;
 
-        this.$('.list').append(fields);
-
+        this.$el.find('.catalogs').append(fields);
+        console.log(this.el)
         return this;
         
     }
