@@ -11,6 +11,26 @@ var Collection_cars = {
                 description: 'Дерзкая-2',
                 mileage: 1231232
             },
+            {
+                title: 'Сучка 1111-3',
+                description: 'Дерзкая',
+                mileage: 123123
+            },
+            {
+                title: 'Сучка 1111-4',
+                description: 'Дерзкая-2',
+                mileage: 1231232
+            },
+            {
+                title: 'Сучка 1111-5',
+                description: 'Дерзкая',
+                mileage: 123123
+            },
+            {
+                title: 'Сучка 1111-6',
+                description: 'Дерзкая-2',
+                mileage: 1231232
+            },
         ],
         2101: [
             {
