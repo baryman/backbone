@@ -1,1 +1,11 @@
-p {color:red;}
+.catalogs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-content: space-around;
+}
+.lot{
+    
+    border: 1px solid #000;
+}

@@ -1,3 +1,4 @@
 *.ibc
 *.o
-.idea
+.idea/
+.vscode/
