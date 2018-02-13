@@ -185,7 +185,7 @@ ListOfCars = Backbone.View.extend({
         var fields = (new ViewOfCar({
             model: element
         })).render().$el;
-
+        console.log(this.model.defaults);
         this.$el.find('.catalogs').append(fields);
 
         return this;
