@@ -73,12 +73,13 @@ var ALL_CARS = Cars,
             });
                      
             // Загружаем новые данные в коллецию
-            _.each(selected_model, function (car) {
+            _.each(selected_model, function (car, index) {
                 
               self.cars_collection.add(new CarModel({
                     id: id,
                     title: car.title,
                     description: car.description,
+                    img: car.img,
                     mileage: car.mileage
                }));
 
@@ -95,6 +96,7 @@ CarModel = Backbone.Model.extend({
         id: '',
         title: '',
         description: '',
+        img: 'http://dummyimage.com/115',
         mileage: ''
     }
 });
@@ -155,12 +157,16 @@ ViewOfCar = Backbone.View.extend({
     className: 'lot',
     template: _.template($('#cars-list').html()),
     render: function () {
+
         this.$el.html(this.template({
             id: this.model.get('id'),
             title: this.model.get('title'),
             description: this.model.get('description'),
+            img: this.model.get('img'),
             mileage: this.model.get('mileage')
         }));
+
+        console.log(this.model);
 
         return this;
     }
@@ -181,7 +187,7 @@ ListOfCars = Backbone.View.extend({
         })).render().$el;
 
         this.$el.find('.catalogs').append(fields);
-        
+
         return this;
         
     }
